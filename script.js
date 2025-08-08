@@ -70,7 +70,7 @@ document.getElementById('enter-popup').addEventListener('click', function() {
   requestAnimationFrame(updateTitle);
 });
 
-let titleText = "dvzn";
+let titleText = "dvznn";
 let opacity = 0;
 let fadeIn = true;
 let delay = 0.003;
