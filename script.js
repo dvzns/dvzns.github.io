@@ -70,6 +70,15 @@ document.getElementById('enter-popup').addEventListener('click', function() {
   requestAnimationFrame(updateTitle);
 });
 
+let titleText = "dvzn";
+let opacity = 0;
+let fadeIn = true;
+let delay = 0.003;
+
+function updateTitle() {
+    let displayText = titleText.charAt(0) + titleText.slice(1, Math.floor(opacity * (titleText.length - 1)) + 1);
+    document.title = displayText;
+
 audio.addEventListener("play", () => {
   let i = 0;
   overlay.style.opacity = "1";
