@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dvzn :P</title>
+    <meta image="/tuff/pfp.png">
+    <meta name="description" content="dvzns bio :P">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="dvzn" />
+    <meta property="og:description" content="dvzns bio :P" />
+    <meta property="og:image" content="/tuff/pfp.png" />
+    <meta property="og:url" content="https://dvzn.lol" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="dvzn" />
+    <meta name="twitter:description" content="dvzns bio :P" />
+    <meta name="twitter:image" content="/tuff/pfp.png" />
+    <link rel="icon" href="/tuff/pfp.png" type="image/x-icon">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+            font-family: 'Space Grotesk', sans-serif;
+            color: white;
+            background: #000000;
+        }
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        #overlay {
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            backdrop-filter: blur(18px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        #text {
+            color: #fff;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 0 2px 12px #222;
+            letter-spacing: 0.05em;
+            font-family: 'Quicksand', sans-serif;
+            margin-bottom: 20px;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .fade-out {
+            animation: fadeOut 0.5s forwards;
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; }
+        }
+        .center-wrapper {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+        }
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        button {
+            background-color: #1a1a1a00;
+            height: 50px;
+            outline: none;
+            border: solid 2px #3b3b3b;
+            color: white;
+            font-family: "Libre Baskerville", sans-serif;
+            font-size: 1.2em;
+            border-radius: 15px;
+            transition: all ease-in-out .15s;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 1.2em;
+            backdrop-filter: blur(20px);
+            padding: 0 20px;
+        }
+        button:hover {
+            background-color: #2a7099;
+            border: solid 2px #00d9ff;
+            box-shadow: 0 0 10px #00b7ff, 0 0 20px #00b7ff, 0 0 30px #00b7ff;
+        }
+        button:active {
+            transform: scale(0.8);
+        }
+        button:disabled {
+            cursor: not-allowed;
+            background-color: #0e0e0e;
+            border: solid 5px #292929;
+            transform: scale(1);
+            box-shadow: 0 0 0px #000;
+        }
+        
+        .section-label {
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            border: 2px solid #3b3b3b;
+            background-color: rgba(26, 26, 26, 0.3);
+            display: inline-block;
+            min-width: 200px;
+            text-align: center;
+        }
+        .links a:hover {
+            border-color: #00a8ff;
+            box-shadow: 0 0 10px #00a8ff, 0 0 20px #00a8ff;
+            background-color: rgba(0, 168, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        #visualizer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 2px;
+            z-index: 1;
+        }
+        .visualizer-bar {
+            width: 40px;
+            background: linear-gradient(to top, #00d9ff, #00a8ff);
+            border-radius: 3px 3px 0 0;
+            transition: height 0.05s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <div id="overlay">
+        <button id="enter-popup">click me to enter</button>
+    </div>
+
+    <div id="visualizer" class="hidden"></div>
+
+    <div class="center-wrapper hidden" id="main-content">
+        <div class="container">
+            <img src="/tuff/pfp.png" alt="dvzn profile" class="profile-pic">
+            <h1>dvzn</h1>
+            <h2>13 | made over 500$ from a silly ubg site. | owner of solo central!</h2>
+            
+            <div class="section-label">projects</div>
+            <div class="links">
+                <a href="https://solocentral.lol" target="_blank">solo central</a>
+                <a href="https://dvzn.lol/sillyseal" target="_blank">silly seal</a>
+                <a href="https://mythic.lat/index.html" target="_blank">mythic.lat</a>
+                <a href="https://chat.dvzn.lol" target="_blank">ZeemoAI</a>
+            </div>
+            
+            <div class="section-label">socials</div>
+            <div class="links">
+                <a href="https://github.com/dvzns" target="_blank">github</a>
+                <a href="mailto:central@soloo.win">email</a>
+                <a href="https://dscrd.lol/szvy" target="_blank">discord</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        const visualizer = document.getElementById('visualizer');
+        const barCount = 50;
+        let audioContext, analyser, dataArray;
+        let bars = [];
+
+        function setupVisualizer() {
+            for (let i = 0; i < barCount; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'visualizer-bar';
+                bar.style.height = '2px';
+                visualizer.appendChild(bar);
+                bars.push(bar);
+            }
+        }
+
+        function updateVisualizer() {
+            if (!analyser) return;
+            
+            analyser.getByteFrequencyData(dataArray);
+            
+            for (let i = 0; i < bars.length; i++) {
+                const value = dataArray[i % dataArray.length] / 255;
+                const height = value * 100;
+                bars[i].style.height = `${height}px`;
+            }
+            
+            requestAnimationFrame(updateVisualizer);
+        }
+        const enterSound = new Audio('/tuff/love-for-you-slowed.mp3');
+        enterSound.preload = 'auto';
+        const enterBtn = document.getElementById('enter-popup');
+        const overlay = document.getElementById('overlay');
+        const mainContent = document.getElementById('main-content');
+
+        enterBtn.addEventListener('click', function() {
+            enterSound.play().catch(e => console.log('Audio playback prevented:', e));
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                const source = audioContext.createMediaElementSource(enterSound);
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+                setupVisualizer();
+                updateVisualizer();
+            }
+            visualizer.classList.remove('hidden');
+            overlay.classList.add('fade-out');
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            }, 500);
+        });
+
+        document.addEventListener('click', function firstClick() {
+            enterSound.play().catch(e => {});
+            document.removeEventListener('click', firstClick);
+        });
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 50,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 2,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": false,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "bottom-left",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 10000,
+                        "rotateY": 10000
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 400,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>
