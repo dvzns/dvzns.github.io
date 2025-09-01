@@ -1,240 +1,80 @@
+<!-- get out of my fucking code  -dvzn -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dvzn :P</title>
-    <style>
-        body,html{margin:0;padding:0;height:100%;width:100%;overflow-x:hidden;font-family:'Space Grotesk',sans-serif;color:#fff;background:#000}
-        #particles-js{position:fixed;width:100%;height:100%;z-index:0;pointer-events:auto}
-        #overlay{position:fixed;z-index:1000;top:0;left:0;width:100vw;height:100vh;backdrop-filter:blur(18px);background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center}
-        .hidden{display:none!important}
-        .fade-out{animation:fadeOut 0.5s forwards}
-        @keyframes fadeOut{to{opacity:0}}
-        .center-wrapper{position:relative;z-index:2;height:calc(100% - 180px);display:flex;justify-content:center;align-items:center}
-        .container{text-align:center;padding:2rem;max-width:600px}
-        .profile-pic{width:140px;height:140px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
-        h1{font-size:2.5rem;margin:1rem 0 0.5rem}
-        h2{font-size:1.2rem;margin:0 0 2rem;opacity:0.9}
-        button{background:rgba(26,26,26,0.3);height:55px;border:2px solid #3b3b3b;color:#fff;font-size:1.2rem;border-radius:12px;transition:all 0.2s;cursor:pointer;margin:10px;padding:0 25px;backdrop-filter:blur(12px)}
-        button:hover{background:rgba(42,112,153,0.5);border-color:#00d9ff;box-shadow:0 0 10px #00b7ff}
-        .section-label{font-size:1.2rem;margin:1.5rem 0 0.5rem;text-transform:uppercase;letter-spacing:1.5px}
-        .links{display:flex;flex-direction:column;gap:1rem}
-        .links a{color:#fff;text-decoration:none;font-size:1.1rem;padding:0.8rem 1.2rem;border-radius:6px;border:2px solid #3b3b3b;background:rgba(26,26,26,0.3);display:inline-block;min-width:220px;transition:all 0.2s}
-        .links a:hover{border-color:#00a8ff;box-shadow:0 0 10px #00a8ff;transform:translateX(5px)}
-        #music-player{position:fixed;bottom:0;left:0;width:100%;height:100px;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);z-index:10;border-top:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;gap:20px}
-        .player-controls{display:flex;align-items:center;gap:15px}
-        .player-btn{background:transparent;border:none;color:#fff;font-size:1.3rem;cursor:pointer;width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-        .player-btn:hover{background:rgba(255,255,255,0.1)}
-        #play-btn{background:rgba(0,168,255,0.3);font-size:1.5rem}
-        #play-btn:hover{background:rgba(0,168,255,0.5)}
-        #song-info{display:flex;align-items:center;gap:15px;max-width:300px}
-        #album-art{width:70px;height:70px;border-radius:8px;object-fit:cover}
-        #song-text{overflow:hidden}
-        #song-title{font-size:1rem;font-weight:bold;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
-        #song-artist{font-size:0.9rem;opacity:0.8}
-        #visualizer{position:absolute;bottom:100px;left:0;width:100%;height:400px;display:flex;justify-content:center;align-items:flex-end;gap:3px;z-index:1}
-        .visualizer-bar{width:100px;background:linear-gradient(to top,#00d9ff,#00a8ff);border-radius:3px 3px 0 0;transition:height 0.05s}
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>dvzn</title>
+    <meta name="theme-color" content="#000001">
+    <link rel="stylesheet" href="public/users/css/cat.css">
+    <link rel="icon" href="stupidshit/pfp.png" type="image/x-icon">
+    <link rel="shortcut icon" href="public\src\img\wyableh.png" type="image/x-icon"> 
+    <meta content="dvzns bio :)" property="og:title" />
+    <meta content="http://dvzn.lol/" property="og:url" />
+    <meta content="https://i.imgur.com/y6XhCX6.jpeg" property="og:image" />
+    <meta content="#000001" data-react-helmet="true" name="theme-color" />
 </head>
+        <style>
+            * {
+                cursor: url(https://r2.guns.lol/d09734ea-1291-4201-baf7-4cdb74045f73.cur) 16 16, auto !important;
+            }
+        </style>
+<script src="snow.js"></script>
+<script src="effects.js"></script>
+<script src="effects2.js"></script>
+<script src="view.js"></script>
 <body>
-    <div id="particles-js"></div>
-    
+<div id="particles-js"></div>
     <div id="overlay">
-        <button id="enter-popup">click me to enter</button>
+        <button class="overlaybtn" onclick="removeOverlay()">click to enter :)</button>
+    </div>
+        <img class="background" src="./stupidshit/bg.gif" draggable="false" style="object-fit: cover;">
+    <div id="user-page">
+        <div class="main-container" id="mainDiv">
+
+            <div class="profile-container">
+                <img class="pp" src="/stupidshit/pfp.png" draggable="false">
+                <p class="username breathing" data-tooltip="dvzn / soloo / qatual / ratman4090">ratman4090</p>
+                <div class="bio-container">
+                    <div class="bio typewriter"></div>
+                </div>
+                <div class="pre-container">
+                    <div class="pre">
+                        <div class="cropped">
+                            <img draggable="false" id="rpc">
+                        </div>
+                    </div>
+                </div>
+<div class="links-container" id="linksDiv">            
+    <div class="logo discord" id="discord" onclick="window.open('https://ratman.win/discord', '_blank');">
+        <img src="discord-solid.png" alt="Discord" class="links" />
+    </div>
+    <div class="logo tiktok" id="tt" onclick="window.open('https://www.tiktok.com/@sizzlevee', '_blank');">
+        <svg fill="#f7f7f7" class="links" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"></path>
+        </svg>
     </div>
 
-    <div id="visualizer" class="hidden"></div>
-
-    <div class="center-wrapper hidden" id="main-content">
-        <div class="container">
-            <img src="/tuff/pfp.png" alt="dvzn profile" class="profile-pic">
-            <h1>dvzn</h1>
-            <h2>13 | made over 500$ from a silly ubg site. | owner of solo central!</h2>
-            
-            <div class="section-label">projects</div>
-            <div class="links">
-                <a href="https://solocentral.lol" target="_blank">solo central</a>
-                <a href="https://dvzn.lol/sillyseal" target="_blank">silly seal</a>
-                <a href="https://mythic.lat/" target="_blank">mythic.lat</a>
-            </div>
-            
-            <div class="section-label">socials</div>
-            <div class="links">
-                <a href="https://github.com/dvzns" target="_blank">github</a>
-                <a href="mailto:central@soloo.win">email</a>
-                <a href="https://dscrd.lol/szvy" target="_blank">discord</a>
-            </div>
-        </div>
+    <div class="logo telegram" id="tele" onclick="window.open('https://solocentral.lol', '_blank');">
+        <img src="gamepad-solid.svg" alt="solo central" class="links" />
     </div>
 
-    <div id="music-player" class="hidden">
-        <div id="song-info">
-            <img id="album-art" src="/tuff/loveforyou.png" alt="Album Art">
-            <div id="song-text">
-                <div id="song-title">Love For You</div>
-                <div id="song-artist">LOVELI LORI</div>
-            </div>
+    <div class="logo mc" id="mc" onclick="window.open('https://mythic.lat', '_blank');">
+        <img src="pickaxe.png" alt="mythical" class="links" />
+    </div>
+</div>
+                <div class="linksline"></div>
+
+
+        <div class="mutebutton">
+            <p id="mutetext" onclick="toggleMusic()">on</p>
         </div>
-        <div class="player-controls">
-            <button class="player-btn" id="prev-btn">⏮</button>
-            <button class="player-btn" id="play-btn">▶</button>
-            <button class="player-btn" id="next-btn">⏭</button>
-        </div>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        const songs = [
-            {
-                title: "Love For You",
-                artist: "LOVELI LORI",
-                src: "/tuff/love-for-you-slowed.mp3",
-                cover: "/tuff/loveforyou.png"
-            },
-            {
-                title: "She Want Me",
-                artist: "Alex Schor",
-                src: "/tuff/SHEWANTME.mp3",
-                cover: "/tuff/shewantme.png"
-            },
-            {
-                title: "Ochame Kinou (Jerk)",
-                artist: "zandsu",
-                src: "/tuff/tetotuffsong.mp3",
-                cover: "/tuff/teto-on-mspaint-lol.png"
-            },
-            {
-                title: "PARASOCIAL",
-                artist: "SUPXR",
-                src: "/tuff/PARASOCIAL.mp3",
-                cover: "/tuff/parasocial.png"
-            }
-        ];
-
-        const audio = new Audio();
-        const enterBtn = document.getElementById('enter-popup');
-        const overlay = document.getElementById('overlay');
-        const mainContent = document.getElementById('main-content');
-        const musicPlayer = document.getElementById('music-player');
-        const playBtn = document.getElementById('play-btn');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const songTitle = document.getElementById('song-title');
-        const songArtist = document.getElementById('song-artist');
-        const albumArt = document.getElementById('album-art');
-        const visualizer = document.getElementById('visualizer');
-        let currentSong = 0;
-        let isPlaying = false;
-        let audioContext, analyser, dataArray, bars = [];
-
-        function loadSong(songIndex) {
-            const song = songs[songIndex];
-            audio.src = song.src;
-            songTitle.textContent = song.title;
-            songArtist.textContent = song.artist;
-            albumArt.src = song.cover;
-        }
-
-        function playSong() {
-            audio.play();
-            isPlaying = true;
-            playBtn.textContent = "⏸";
-            setupVisualizer();
-        }
-
-        function pauseSong() {
-            audio.pause();
-            isPlaying = false;
-            playBtn.textContent = "▶";
-        }
-
-        function setupVisualizer() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioContext.createAnalyser();
-                analyser.fftSize = 256;
-                const source = audioContext.createMediaElementSource(audio);
-                source.connect(analyser);
-                analyser.connect(audioContext.destination);
-                dataArray = new Uint8Array(analyser.frequencyBinCount);
-            }
-
-            visualizer.innerHTML = '';
-            bars = [];
-            for (let i = 0; i < 50; i++) {
-                const bar = document.createElement('div');
-                bar.className = 'visualizer-bar';
-                bar.style.height = '2px';
-                visualizer.appendChild(bar);
-                bars.push(bar);
-            }
-
-            function update() {
-                analyser.getByteFrequencyData(dataArray);
-                for (let i = 0; i < bars.length; i++) {
-                    const value = dataArray[i % dataArray.length] / 255;
-                    bars[i].style.height = `${value * 100}px`;
-                }
-                requestAnimationFrame(update);
-            }
-            update();
-        }
-
-        enterBtn.addEventListener('click', () => {
-            loadSong(0);
-            playSong();
-            overlay.classList.add('fade-out');
-            setTimeout(() => {
-                overlay.classList.add('hidden');
-                mainContent.classList.remove('hidden');
-                musicPlayer.classList.remove('hidden');
-                visualizer.classList.remove('hidden');
-            }, 500);
-        });
-
-        playBtn.addEventListener('click', () => {
-            isPlaying ? pauseSong() : playSong();
-        });
-
-        prevBtn.addEventListener('click', () => {
-            currentSong = (currentSong - 1 + songs.length) % songs.length;
-            loadSong(currentSong);
-            if (isPlaying) playSong();
-        });
-
-        nextBtn.addEventListener('click', () => {
-            currentSong = (currentSong + 1) % songs.length;
-            loadSong(currentSong);
-            if (isPlaying) playSong();
-        });
-
-        audio.addEventListener('ended', () => {
-            nextBtn.click();
-        });
-
-        particlesJS("particles-js", {
-            particles: {
-                number: {value:80,density:{enable:true,value_area:800}},
-                color: {value:"#ffffff"},
-                shape: {type:"circle"},
-                opacity: {value:1,random:false},
-                size: {value:3,random:true},
-                line_linked: {enable:false},
-                move: {enable:true,speed:6,direction:"bottom-left",random:true,out_mode:"out"}
-            },
-            interactivity: {
-                detect_on:"window",
-                events: {
-                    onhover:{enable:true,mode:"repulse"},
-                    onclick:{enable:true,mode:"push"}
-                },
-                modes: {
-                    repulse: {distance:190,duration:0.4},
-                    push: {particles_nb:4}
-                }
-            }
-        });
-    </script>
+    <audio id="backgroundsong" src="./r2.wya.lol/lfy.mp3" loop></audio>
 </body>
+
 </html>
