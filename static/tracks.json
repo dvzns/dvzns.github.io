@@ -1,0 +1,14 @@
+[
+      { "title": "BBC FREESTYLE",
+   "artist": "DigBar",
+    "src": "/static/ayo.mp3", 
+    "cover": "/static/ayo.jpg" },
+    { "title": "YRI ( young rich incels )",
+   "artist": "yung spinach",
+    "src": "/static/yri.mp3", 
+    "cover": "/static/yri.jpg" },
+  { "title": "miku jersey club",
+   "artist": "YungLex",
+    "src": "/static/miku.mp3", 
+    "cover": "/static/miku.png" }
+]

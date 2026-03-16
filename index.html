@@ -1,1192 +1,838 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dvzn</title>
-    <link rel="icon" type="image/png" href="assets/ico.png">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Courier New', monospace;
-        }
-
-
-        .custom-cursor {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            background: url('') no-repeat center center;
-            background-size: contain;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-        }
-
-
-        body {
-            background-color: #000;
-            color: #fff;
-            overflow: hidden;
-        }
-
-        .container {
-            width: 100%;
-            height: 100vh;
-            position: relative;
-        }
-
-        #background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .glitch-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        #hacker-overlay,
-        #snow-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 3;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-
-        .controls {
-            position: fixed;
-            bottom: calc(50% - 240px - 10px);
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 20;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 5px 10px;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
-        }
-
-        .theme-button {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            background-color: rgba(0, 0, 0, 0.5);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .theme-button:hover {
-            transform: scale(1.1);
-            border-color: rgba(255, 255, 255, 0.8);
-        }
-
-
-        .volume-control {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .volume-icon {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            display: flex;
-            color: white;
-        }
-
-        .slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 80px;
-            height: 5px;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.3);
-            outline: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-        }
-
-
-        .transparency-control {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .transparency-icon {
-            width: 20px;
-            height: 20px;
-            color: white;
-        }
-
-
-        .top-controls {
-            position: fixed;
-            bottom: calc(50% - 240px - 60px);
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 20;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 8px 12px;
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
-        }
-
-
-        #profile-block {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 820px;
-            min-height: 332px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            backdrop-filter: blur(10px);
-            opacity: 0;
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease-out;
-            pointer-events: auto;
-        }
-
-        .profile-header {
-            background-image: url('assets/def_profile.gif');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-            z-index: 1;
-
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-
-            height: 160px;
-            border-top-left-radius: 25px;
-            border-top-right-radius: 25px;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-            overflow: hidden;
-        }
-
-        .profile-header::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .profile-header>* {
-            position: relative;
-            z-index: 1;
-        }
-
-
-
-        .profile-container {
-            position: relative;
-            top: 5px;
-            left: 5px;
-            width: 150px;
-            height: 150px;
-        }
-
-        .profile-container::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 10px 10px,
-                    var(--primary-color, #8708F0) 10%,
-                    transparent 35%);
-            animation: orbit 2s linear infinite;
-            z-index: -1;
-            filter: blur(1px);
-            box-shadow: none;
-        }
-
-        .profile-container.fast-orbit::after {
-            animation: fast-orbit 0.5s linear forwards;
-        }
-
-        .profile-picture {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            cursor: pointer;
-            pointer-events: auto;
-            opacity: 1 !important;
-        }
-
-        .profile-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .name-and-badges {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-
-        @font-face {
-            font-family: 'Angel Wish';
-            src: url('') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        #profile-name {
-            font-family: 'Angel Wish', sans-serif;
-            font-size: 32px;
-            font-weight: bold;
-            letter-spacing: 3px;
-            color: #fff;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
-            opacity: 1 !important;
-        }
-
-        .badge-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .badge-container {
-            position: relative;
-            pointer-events: auto;
-            opacity: 1 !important;
-        }
-
-        .badge-container .tooltip {
-            visibility: hidden;
-            width: 120px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 0;
-            position: absolute;
-            z-index: 100;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -60px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .badge-container:hover .tooltip {
-            visibility: visible;
-            opacity: 1 !important;
-        }
-
-        .badge-box {
-
-            padding-top: 12px;
-            padding-right: 12px;
-            padding-bottom: 2px;
-            padding-left: 2px;
-            border-radius: 15px;
-            display: inline-block;
-        }
-
-        .badge-box-inner {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px;
-            border-radius: 12px;
-            display: flex;
-            gap: 8px;
-            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
-        }
-
-        .badge {
-            width: 22px;
-            height: 22px;
-            transition: transform 0.3s;
-            pointer-events: auto;
-            opacity: 1 !important;
-        }
-
-        .badge:hover {
-            transform: scale(1.2);
-        }
-
-        #profile-bio {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 20px;
-            line-height: 1.5;
-            margin-bottom: 10px;
-            opacity: 1 !important;
-        }
-
-        .bio-separator {
-            width: 100%;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.2);
-            margin: 20px 0;
-            opacity: 1 !important;
-        }
-
-        .profile-footer {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            width: 100%;
-            margin-top: auto;
-        }
-
-        .visitor-counter {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            align-self: flex-start;
-            position: relative;
-            pointer-events: auto;
-            opacity: 1 !important;
-        }
-
-        .visitor-icon {
-            width: 18px;
-            height: 18px;
-            color: white;
-            opacity: 1 !important;
-        }
-
-        .visitor-counter .tooltip {
-            visibility: hidden;
-            width: 120px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px 0;
-            position: absolute;
-            z-index: 100;
-            top: -35px;
-            left: 50%;
-            margin-left: -60px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .visitor-counter:hover .tooltip {
-            visibility: visible;
-            opacity: 1 !important;
-        }
-
-        #visitor-count {
-            opacity: 1 !important;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 0;
-            pointer-events: auto;
-            opacity: 1 !important;
-        }
-
-        .social-icon {
-            width: 36px;
-            height: 36px;
-            transition: transform 0.3s ease;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
-            pointer-events: auto;
-            opacity: 1 !important;
-        }
-
-        .social-icon:hover {
-            transform: scale(1.4) rotateY(15deg);
-        }
-
-
-        #skills-block {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 820px;
-            min-height: 332px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            z-index: 20;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            backdrop-filter: blur(10px);
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease-out;
-        }
-
-        .skills-title {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        .skill {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .skill-name {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .skill-icon {
-            width: 22px;
-            height: 22px;
-            margin-right: 8px;
-        }
-
-        .skill-bar-container {
-            height: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .skill-bar {
-            height: 100%;
-            border-radius: 5px;
-            width: 0%;
-            transition: width 2s;
-        }
-
-        #python-bar {
-            background: linear-gradient(90deg, #ff6b6b, #ff9f9f);
-        }
-
-        #cpp-bar {
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
-        }
-
-        #csharp-bar {
-            background: linear-gradient(90deg, #43e97b, #38f9d7);
-        }
-
-
-        #results-button-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 20;
-        }
-
-        #results-theme {
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s;
-        }
-
-        #results-theme:hover {
-            background: rgba(0, 0, 0, 0.9);
-            border-color: rgba(255, 255, 255, 0.8);
-        }
-
-        #results-hint {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-size: 12px;
-            width: 180px;
-            text-align: center;
-            pointer-events: none;
-            z-index: 25;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        #results-hint::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 0 10px 10px 10px;
-            border-style: solid;
-            border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent;
-        }
-
-
-        .home-theme #profile-block,
-        .home-theme #skills-block {
-            border-color: rgba(0, 195, 255, 0.5);
-        }
-
-        .hacker-theme #profile-block,
-        .hacker-theme #skills-block {
-            border-color: rgba(0, 255, 0, 0.5);
-        }
-
-        .rain-theme #profile-block,
-        .rain-theme #skills-block {
-            border-color: rgba(100, 149, 237, 0.5);
-        }
-
-        .anime-theme #profile-block,
-        .anime-theme #skills-block {
-            border-color: rgba(255, 0, 255, 0.5);
-        }
-
-        .car-theme #profile-block,
-        .car-theme #skills-block {
-            border-color: rgba(255, 165, 0, 0.5);
-        }
-
-
-        .glitch {
-            animation: glitch 0.2s ease-in-out;
-        }
-
-        @keyframes glitch {
-            0% {
-                transform: translate(0);
-            }
-
-            20% {
-                transform: translate(-2px, 2px);
-            }
-
-            40% {
-                transform: translate(-2px, -2px);
-            }
-
-            60% {
-                transform: translate(2px, 2px);
-            }
-
-            80% {
-                transform: translate(2px, -2px);
-            }
-
-            100% {
-                transform: translate(0);
-            }
-        }
-
-        @keyframes orbit {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes fast-orbit {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-
-        .cursor-trail {
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        .cursor-trail-dot {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.3s ease;
-        }
-
-
-        #start-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 30;
-            cursor: pointer;
-        }
-
-        #start-text {
-            font-family: 'Courier New', monospace;
-            font-size: 24px;
-            color: #fff;
-            text-align: center;
-        }
-
-
-        @media (max-width: 430px) {
-
-            #profile-block,
-            #skills-block {
-                width: 90vw;
-                max-width: 350px;
-                min-height: 280px;
-                padding: 15px;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-
-            .profile-header {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-            }
-
-            .profile-container {
-                width: 120px;
-                height: 120px;
-            }
-
-            .profile-picture {
-                width: 120px;
-                height: 120px;
-            }
-
-            .profile-info {
-                align-items: center;
-                text-align: center;
-            }
-
-            .name-and-badges {
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
-            }
-
-            #profile-name {
-                font-size: 24px;
-                letter-spacing: 2px;
-            }
-
-            .badge-group {
-                justify-content: center;
-                gap: 6px;
-            }
-
-            .badge {
-                width: 18px;
-                height: 18px;
-            }
-
-            .badge-container .tooltip {
-                width: 100px;
-                font-size: 12px;
-                margin-left: -50px;
-                bottom: 110%;
-            }
-
-            #profile-bio {
-                font-size: 14px;
-                line-height: 1.4;
-            }
-
-            .bio-separator {
-                margin: 15px 0;
-            }
-
-            .social-links {
-                gap: 10px;
-                justify-content: center;
-            }
-
-            .social-icon {
-                width: 32px;
-                height: 32px;
-            }
-
-            .visitor-counter {
-                font-size: 12px;
-                padding: 6px 12px;
-                align-self: center;
-            }
-
-            .visitor-icon {
-                width: 16px;
-                height: 16px;
-            }
-
-            .visitor-counter .tooltip {
-                width: 100px;
-                font-size: 12px;
-                margin-left: -50px;
-                top: -30px;
-            }
-
-            .skills-title {
-                font-size: 18px;
-                margin-bottom: 10px;
-            }
-
-            .skill-icon {
-                width: 18px;
-                height: 18px;
-            }
-
-            .skill-name span {
-                font-size: 14px;
-            }
-
-            .controls {
-                bottom: 20px;
-                gap: 8px;
-                padding: 5px 8px;
-            }
-
-            .theme-button {
-                width: 28px;
-                height: 28px;
-                font-size: 12px;
-            }
-
-
-            .top-controls {
-                bottom: 70px;
-                gap: 10px;
-                padding: 6px 10px;
-            }
-
-            .volume-control,
-            .transparency-control {
-                gap: 6px;
-            }
-
-            .volume-icon,
-            .transparency-icon {
-                width: 18px;
-                height: 18px;
-            }
-
-            .slider {
-                width: 60px;
-                height: 4px;
-            }
-
-            .slider::-webkit-slider-thumb {
-                width: 10px;
-                height: 10px;
-            }
-
-
-            #results-button-container {
-                top: 10px;
-            }
-
-            #results-theme {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-
-            #results-hint {
-                width: 150px;
-                font-size: 10px;
-                padding: 6px 10px;
-            }
-
-
-            #start-text {
-                font-size: 18px;
-                padding: 0 20px;
-            }
-        }
-
-        .name-and-badges {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Retro+Gaming&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>qatual</title>
+  <link href="https://fonts.googleapis.com/css2?family=Parkinsans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --miku: #39C5BB;
+      --miku-glow: rgba(57, 197, 187, 0.45);
+      --miku-border: rgba(57, 197, 187, 0.7);
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #bg { position: fixed; inset: 0; z-index: 0; }
+
+    #vizcanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    #vizcanvas.active { opacity: 1; }
+
+    .card {
+      position: relative;
+      z-index: 10;
+      background: rgba(4, 14, 18, 0.6);
+      backdrop-filter: blur(20px) saturate(1.5);
+      -webkit-backdrop-filter: blur(20px) saturate(1.5);
+      border: 4px solid var(--miku-border);
+      border-radius: 20px;
+      padding: 90px 130px;
+      text-align: center;
+      box-shadow:
+        0 0 0 1px rgba(57,197,187,0.08) inset,
+        0 30px 80px rgba(0,0,0,0.65),
+        0 0 60px rgba(57,197,187,0.08);
+      animation: rise 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(32px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .pfp {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--miku);
+      margin: 0 auto 24px;
+      display: block;
+    }
+
+    .card h1 {
+      font-family: 'Parkinsans', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+      color: #fff;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .card h1 span { font-weight: 300; opacity: 0.65; }
+
+    .icons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      margin-top: 30px;
+    }
+
+    .icons a, .icons button {
+      color: rgba(255,255,255,0.45);
+      font-size: 2rem;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), text-shadow 0.25s ease;
+      display: inline-block;
+      line-height: 1;
+    }
+
+    .icons a:hover, .icons button:hover {
+      color: var(--miku);
+      transform: scale(1.24);
+      text-shadow: 0 0 14px var(--miku-glow);
+    }
+
+    #player {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 60;
+      background: #000;
+      background-image: linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 24px 24px;
+      border-bottom: 1px solid rgba(57,197,187,0.15);
+      backdrop-filter: blur(24px);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      opacity: 0;
+      transform: translateY(-20px);
+      pointer-events: none;
+      transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    #player.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    .p-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 240px;
+      flex-shrink: 0;
+    }
+
+    .p-cover {
+      width: 52px;
+      height: 52px;
+      border-radius: 4px;
+      background: rgba(57,197,187,0.08);
+      border: 1px solid rgba(57,197,187,0.15);
+      flex-shrink: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.2);
+      font-size: 1rem;
+    }
+
+    .p-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .p-cover img.loaded { display: block; }
+
+    .p-meta { min-width: 0; }
+
+    .p-title {
+      font-family: 'Parkinsans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .p-artist {
+      font-family: 'Parkinsans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.4);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .p-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .p-controls {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .p-controls button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.9rem;
+      padding: 0;
+      transition: color 0.15s ease, transform 0.15s ease;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .p-controls button:hover { color: #fff; transform: scale(1.1); }
+
+    .p-controls .p-playpause {
+      font-size: 1.1rem;
+      color: #fff !important;
+    }
+
+    .p-controls .p-shuffle.on,
+    .p-controls .p-repeat.on { color: var(--miku); }
+    .p-controls button { color: rgba(255,255,255,0.5); }
+
+    .p-seek {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .p-time {
+      font-family: 'Parkinsans', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.3);
+      flex-shrink: 0;
+      width: 30px;
+      text-align: center;
+    }
+
+    .p-bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 99px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .p-bar:hover .p-bar-fill::after { display: block; }
+
+    .p-bar-fill {
+      height: 100%;
+      background: var(--miku);
+      border-radius: 99px;
+      width: 0%;
+      pointer-events: none;
+      position: relative;
+    }
+
+    .p-bar-fill::after {
+      content: '';
+      display: none;
+      position: absolute;
+      right: -5px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .p-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 240px;
+      justify-content: flex-end;
+      flex-shrink: 0;
+    }
+
+    .p-right button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.82rem;
+      padding: 0;
+      transition: color 0.15s ease;
+      line-height: 1;
+    }
+
+    .p-right button:hover { color: #fff; }
+    .p-right button.on { color: var(--miku); }
+
+    .p-vol-wrap {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .p-vol-bar {
+      width: 80px;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 99px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .p-vol-fill {
+      height: 100%;
+      background: #fff;
+      border-radius: 99px;
+      width: 80%;
+      pointer-events: none;
+    }
+
+    .p-queue-panel {
+      position: fixed;
+      top: 80px;
+      right: 18px;
+      z-index: 70;
+      width: 300px;
+      background: rgba(4, 10, 14, 0.97);
+      border: 1px solid rgba(57,197,187,0.2);
+      border-radius: 12px;
+      backdrop-filter: blur(24px);
+      box-shadow: 0 -4px 40px rgba(0,0,0,0.6);
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1);
+      overflow: hidden;
+    }
+
+    .p-queue-panel.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    .q-header {
+      padding: 16px 16px 8px;
+      font-family: 'Parkinsans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .q-list {
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 0 8px 12px;
+    }
+
+    .q-list::-webkit-scrollbar { width: 3px; }
+    .q-list::-webkit-scrollbar-thumb { background: rgba(57,197,187,0.3); border-radius: 99px; }
+
+    .q-track {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .q-track:hover { background: rgba(255,255,255,0.05); }
+    .q-track.now { background: rgba(57,197,187,0.07); }
+
+    .q-cover {
+      width: 36px;
+      height: 36px;
+      border-radius: 4px;
+      background: rgba(57,197,187,0.08);
+      flex-shrink: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.2);
+      font-size: 0.7rem;
+    }
+
+    .q-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .q-cover img.loaded { display: block; }
+
+    .q-meta { flex: 1; min-width: 0; }
+
+    .q-name {
+      font-family: 'Parkinsans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .q-track.now .q-name { color: var(--miku); }
+
+    .q-artist {
+      font-family: 'Parkinsans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.28);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #tooltip {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      background: rgba(4, 14, 18, 0.9);
+      border: 1px solid var(--miku-border);
+      color: #fff;
+      font-family: 'Parkinsans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      padding: 5px 13px;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      backdrop-filter: blur(8px);
+      transform: translate(-50%, -160%);
+    }
+
+    #tooltip.visible { opacity: 1; }
+
+    #overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(2, 8, 12, 0.75);
+      backdrop-filter: blur(16px) brightness(0.55);
+      -webkit-backdrop-filter: blur(16px) brightness(0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #overlay.hidden { opacity: 0; pointer-events: none; }
+
+    .overlay-text {
+      font-family: 'Parkinsans', sans-serif;
+      font-weight: 400;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.02em;
+      animation: pulse 2.8s ease-in-out infinite;
+      user-select: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+  </style>
 </head>
+<body>
 
-<body class="home-theme" onload="initMedia()">
+  <div id="bg"></div>
+  <canvas id="vizcanvas"></canvas>
 
-    <div class="custom-cursor"></div>
+  <div class="card">
+    <img class="pfp" src="/pfp.png" alt="pfp" />
+    <h1><span>hello, i'm </span>qatual.</h1>
+    <div class="icons">
+      <a href="#" data-tip="GitHub"><i class="fa-brands fa-github"></i></a>
+      <a href="#" data-tip="Discord"><i class="fa-brands fa-discord"></i></a>
+      <a href="#" data-tip="Steam"><i class="fa-brands fa-steam"></i></a>
+      <a href="mailto:" data-tip="Email"><i class="fa-solid fa-envelope"></i></a>
+      <a href="https://solocentral.org" target="_blank" data-tip="Solo Central"><i class="fa-solid fa-gamepad"></i></a>
+    </div>
+  </div>
 
+  <div id="player">
+    <div class="p-left">
+      <div class="p-cover" id="pCover">
+        <img id="pCoverImg" src="" alt="" />
+        <i class="fa-solid fa-music"></i>
+      </div>
+      <div class="p-meta">
+        <div class="p-title" id="pTitle">—</div>
+        <div class="p-artist" id="pArtist">—</div>
+      </div>
 
-    <div id="start-screen">
-        <div id="start-text"></div>
     </div>
 
-    <div class="container">
-
-
-
-        <video id="background" loop playsinline webkit-playsinline>
-            <source id="bgSource" src="" type="video/webm">
-        </video>
-
-
-
-        <div class="glitch-overlay"></div>
-        <div id="hacker-overlay" class="hidden">
-
-        </div>
-        <div id="snow-overlay" class="hidden">
-
-        </div>
-
-
-        <div id="profile-block">
-            <div class="profile-header">
-
-
-                <div class="profile-container">
-                    <img src="pfp.png" alt="Profile" class="profile-picture">
-                </div>
-                <div class="profile-info">
-                    <div class="name-and-badges">
-                        <div id="profile-name">qatual</div>
-                        <div class="badge-box">
-                            <div class="badge-box-inner">
-                                <div class="badge-group">
-                                    <div class="badge-container">
-                                        <img src="assets/staff.png" alt="Staff" class="badge" />
-
-                                    </div>
-                                    <div class="badge-container">
-                                        <img src="assets/active_developer.png" alt="Active Developer" class="badge">
-
-                                    </div>
-                                    <div class="badge-container">
-                                        <img src="assets/quests.png" alt="Quests" class="badge">
-
-                                    </div>
-                                    <div class="badge-container">
-                                        <img src="assets/nitro.png" alt="Nitro" class="badge">
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="profile-bio"></div>
-                </div>
-            </div>
-
-            <div class="bio-separator"></div>
-
-            <div class="profile-footer">
-
-                <div class="social-links">
-                    <a href="https://ratman.win/discord" target="_blank">
-                        <img src="assets/discord.png" alt="Discord" class="social-icon">
-                    </a>
-                    <a href="https://solocentral.lol/" target="_blank">
-                        <img src="assets/world.png" alt="Website" class="social-icon">
-                    </a>
-                    <a href="https://github.com/dvzns" target="_blank">
-                        <img src="assets/github.png" alt="GitHub" class="social-icon">
-                    </a>
-                </div>
-
-
-                <div class="visitor-counter">
-                    <svg class="visitor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                        </path>
-                    </svg>
-                    <span id="visitor-count"></span>
-                    <span class="tooltip">Profile Views</span>
-                </div>
-            </div>
-        </div>
-
-
-        <div id="skills-block" class="hidden">
-            <h2 class="skills-title">Programming Skills</h2>
-            <div class="skill">
-                <div class="skill-name">
-                    <img src="" alt="C++" class="skill-icon">
-                    <span>C++</span>
-                    <span>75%</span>
-                </div>
-                <div class="skill-bar-container">
-                    <div id="cpp-bar" class="skill-bar"></div>
-                </div>
-            </div>
-            <div class="skill">
-                <div class="skill-name">
-                    <img src="" alt="C#" class="skill-icon">
-                    <span>C#</span>
-                    <span>80%</span>
-                </div>
-                <div class="skill-bar-container">
-                    <div id="csharp-bar" class="skill-bar"></div>
-                </div>
-            </div>
-        </div>
-
-
-        <div id="results-button-container" class="hidden">
-            <button id="results-theme">View Results</button>
-            <div id="results-hint" class="hidden">Click again to return to profile</div>
-        </div>
-
-
-        <div class="controls" style="display: none;">
-            <div id="home-theme" class="theme-button">1</div>
-            <div id="hacker-theme" class="theme-button">2</div>
-            <div id="rain-theme" class="theme-button">3</div>
-            <div id="anime-theme" class="theme-button">4</div>
-            <div id="car-theme" class="theme-button">5</div>
-        </div>
-
-
-        <div class="top-controls">
-            <div class="volume-control">
-                <svg id="volume-icon" class="volume-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z">
-                    </path>
-                </svg>
-                <input id="volume-slider" class="slider" type="range" min="0" max="1" step="0.01" value="0.3">
-            </div>
-            <div class="transparency-control">
-
-                <input id="transparency-slider" hidden>
-            </div>
-        </div>
+    <div class="p-center">
+      <div class="p-controls">
+        <button class="p-shuffle" id="pShuffle" title="Shuffle"><i class="fa-solid fa-shuffle"></i></button>
+        <button id="pPrev" title="Previous"><i class="fa-solid fa-backward-step"></i></button>
+        <button class="p-playpause" id="pPlay"><i class="fa-solid fa-pause"></i></button>
+        <button id="pNext" title="Next"><i class="fa-solid fa-forward-step"></i></button>
+        <button class="p-repeat" id="pRepeat" title="Repeat"><i class="fa-solid fa-repeat"></i></button>
+      </div>
+      <div class="p-seek">
+        <span class="p-time" id="pCurrent">0:00</span>
+        <div class="p-bar" id="pBar"><div class="p-bar-fill" id="pFill"></div></div>
+        <span class="p-time" id="pDuration">0:00</span>
+      </div>
     </div>
 
+    <div class="p-right">
+      <button id="pQueueBtn" title="Queue"><i class="fa-solid fa-list"></i></button>
+      <div class="p-vol-wrap">
+        <button id="pVolBtn"><i class="fa-solid fa-volume-high"></i></button>
+        <div class="p-vol-bar" id="pVolBar"><div class="p-vol-fill" id="pVolFill"></div></div>
+      </div>
+    </div>
+  </div>
 
-<audio id="background-music" loop>
-    <source id="bgmSource" src="music.mp3" type="audio/mp3">
-</audio>
+  <div class="p-queue-panel" id="queuePanel">
+    <div class="q-header">tracks</div>
+    <div class="q-list" id="qNow"></div>
+    <div class="q-list" id="qNext"></div>
+  </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const music = document.getElementById("background-music");
-    const volumeSlider = document.getElementById("volume-slider");
-    const volumeIcon = document.getElementById("volume-icon");
-    const startScreen = document.getElementById("start-screen");
+  <div id="tooltip"></div>
 
-    music.volume = volumeSlider.value;
+  <div id="overlay">
+    <span class="overlay-text">click to enter</span>
+  </div>
 
-        startScreen.addEventListener("click", () => {
-        music.play().catch(err => console.warn("Autoplay blocked:", err));
-        startScreen.style.display = "none"; 
+  <audio id="music"></audio>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.cells.min.js"></script>
+  <script>
+    VANTA.CELLS({
+      el: "#bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      color1: 0x071a1f,
+      color2: 0x39C5BB,
+      size: 1.00,
+      speed: 1.60
     });
 
-    volumeSlider.addEventListener("input", () => {
-        music.volume = volumeSlider.value;
-        if (music.volume === 0) {
-            volumeIcon.style.opacity = "0.5";
-        } else {
-            volumeIcon.style.opacity = "1";
+    const audioEl = document.getElementById('music');
+    let tracks = [];
+    let currentIdx = 0;
+    let shuffle = false;
+    let repeat = false;
+    let muted = false;
+    let lastVol = 0.8;
+    let vizStarted = false;
+
+    function fmt(s) {
+      if (isNaN(s)) return '0:00';
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return m + ':' + String(sec).padStart(2, '0');
+    }
+
+    function setCover(src, imgEl, iconEl) {
+      if (src) {
+        imgEl.src = src;
+        imgEl.onload = () => imgEl.classList.add('loaded');
+        if (iconEl) iconEl.style.display = 'none';
+      } else {
+        imgEl.src = '';
+        imgEl.classList.remove('loaded');
+        if (iconEl) iconEl.style.display = '';
+      }
+    }
+
+    function loadTrack(idx, autoplay) {
+      if (!tracks.length) return;
+      currentIdx = ((idx % tracks.length) + tracks.length) % tracks.length;
+      const t = tracks[currentIdx];
+      audioEl.src = t.src;
+      audioEl.volume = lastVol;
+      document.getElementById('pTitle').textContent = t.title;
+      document.getElementById('pArtist').textContent = t.artist;
+      document.getElementById('pFill').style.width = '0%';
+      document.getElementById('pCurrent').textContent = '0:00';
+      document.getElementById('pDuration').textContent = '0:00';
+      const img = document.getElementById('pCoverImg');
+      const icon = document.querySelector('.p-cover i');
+      setCover(t.cover || '', img, icon);
+      if (autoplay) {
+        audioEl.play().catch(() => {});
+        document.querySelector('#pPlay i').className = 'fa-solid fa-pause';
+      }
+      buildQueue();
+    }
+
+    function buildQueue() {
+      if (!tracks.length) return;
+      const nowEl = document.getElementById('qNow');
+      const nextEl = document.getElementById('qNext');
+      const t = tracks[currentIdx];
+
+      nowEl.innerHTML = '';
+      const nowRow = document.createElement('div');
+      nowRow.className = 'q-track now';
+      nowRow.innerHTML = `
+        <div class="q-cover"><img src="${t.cover||''}" /><i class="fa-solid fa-music"></i></div>
+        <div class="q-meta">
+          <div class="q-name">${t.title}</div>
+          <div class="q-artist">${t.artist}</div>
+        </div>`;
+      if (t.cover) {
+        const img = nowRow.querySelector('img');
+        img.onload = () => img.classList.add('loaded');
+      }
+      nowEl.appendChild(nowRow);
+
+      nextEl.innerHTML = '';
+      const upcoming = shuffle
+        ? [...tracks].filter((_, i) => i !== currentIdx).sort(() => Math.random() - 0.5).slice(0, 6)
+        : tracks.slice(currentIdx + 1).concat(tracks.slice(0, currentIdx)).slice(0, 8);
+
+      upcoming.forEach((tr, i) => {
+        const origIdx = tracks.indexOf(tr);
+        const row = document.createElement('div');
+        row.className = 'q-track';
+        row.innerHTML = `
+          <div class="q-cover"><img src="${tr.cover||''}" /><i class="fa-solid fa-music"></i></div>
+          <div class="q-meta">
+            <div class="q-name">${tr.title}</div>
+            <div class="q-artist">${tr.artist}</div>
+          </div>`;
+        if (tr.cover) {
+          const img = row.querySelector('img');
+          img.onload = () => img.classList.add('loaded');
         }
+        row.addEventListener('click', () => loadTrack(origIdx, true));
+        nextEl.appendChild(row);
+      });
+    }
+
+    fetch('/static/tracks.json')
+      .then(r => r.json())
+      .then(data => {
+        tracks = data;
+        loadTrack(0, false);
+      })
+      .catch(() => {
+        tracks = [{ title: 'music', artist: 'qatual', src: '/static/music.mp3', cover: '' }];
+        loadTrack(0, false);
+      });
+
+    document.getElementById('overlay').addEventListener('click', () => {
+      document.getElementById('overlay').classList.add('hidden');
+      if (tracks.length) audioEl.play().catch(() => {});
+      document.getElementById('player').classList.add('visible');
+      document.querySelector('#pPlay i').className = 'fa-solid fa-pause';
+      if (!vizStarted) { vizStarted = true; startViz(); }
     });
 
-    let lastVolume = music.volume;
-    volumeIcon.addEventListener("click", () => {
-        if (music.volume > 0) {
-            lastVolume = music.volume;
-            music.volume = 0;
-            volumeSlider.value = 0;
-            volumeIcon.style.opacity = "0.5";
-        } else {
-            music.volume = lastVolume || 0.3;
-            volumeSlider.value = music.volume;
-            volumeIcon.style.opacity = "1";
+    document.getElementById('pPlay').addEventListener('click', () => {
+      const icon = document.querySelector('#pPlay i');
+      if (audioEl.paused) {
+        audioEl.play();
+        icon.className = 'fa-solid fa-pause';
+      } else {
+        audioEl.pause();
+        icon.className = 'fa-solid fa-play';
+      }
+    });
+
+    document.getElementById('pPrev').addEventListener('click', () => {
+      if (audioEl.currentTime > 3) { audioEl.currentTime = 0; return; }
+      loadTrack(currentIdx - 1, true);
+    });
+
+    document.getElementById('pNext').addEventListener('click', () => {
+      if (shuffle) {
+        loadTrack(Math.floor(Math.random() * tracks.length), true);
+      } else {
+        loadTrack(currentIdx + 1, true);
+      }
+    });
+
+    audioEl.addEventListener('ended', () => {
+      if (repeat) { audioEl.currentTime = 0; audioEl.play(); return; }
+      if (shuffle) { loadTrack(Math.floor(Math.random() * tracks.length), true); }
+      else { loadTrack(currentIdx + 1, true); }
+    });
+
+    document.getElementById('pShuffle').addEventListener('click', (e) => {
+      shuffle = !shuffle;
+      e.currentTarget.classList.toggle('on', shuffle);
+    });
+
+    document.getElementById('pRepeat').addEventListener('click', (e) => {
+      repeat = !repeat;
+      e.currentTarget.classList.toggle('on', repeat);
+    });
+
+    audioEl.addEventListener('timeupdate', () => {
+      if (!audioEl.duration) return;
+      const pct = (audioEl.currentTime / audioEl.duration) * 100;
+      document.getElementById('pFill').style.width = pct + '%';
+      document.getElementById('pCurrent').textContent = fmt(audioEl.currentTime);
+      document.getElementById('pDuration').textContent = fmt(audioEl.duration);
+    });
+
+    document.getElementById('pBar').addEventListener('click', (e) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      audioEl.currentTime = pct * (audioEl.duration || 0);
+    });
+
+    document.getElementById('pVolBtn').addEventListener('click', () => {
+      muted = !muted;
+      audioEl.volume = muted ? 0 : lastVol;
+      document.getElementById('pVolFill').style.width = muted ? '0%' : (lastVol * 100) + '%';
+      document.querySelector('#pVolBtn i').className = muted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-volume-high';
+    });
+
+    document.getElementById('pVolBar').addEventListener('click', (e) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      lastVol = pct;
+      audioEl.volume = pct;
+      muted = false;
+      document.getElementById('pVolFill').style.width = (pct * 100) + '%';
+      document.querySelector('#pVolBtn i').className = pct === 0 ? 'fa-solid fa-volume-xmark' : pct < 0.4 ? 'fa-solid fa-volume-low' : 'fa-solid fa-volume-high';
+    });
+
+    document.getElementById('pQueueBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const panel = document.getElementById('queuePanel');
+      const btn = document.getElementById('pQueueBtn');
+      panel.classList.toggle('open');
+      btn.classList.toggle('on', panel.classList.contains('open'));
+    });
+
+    document.addEventListener('click', (e) => {
+      const panel = document.getElementById('queuePanel');
+      if (!panel.contains(e.target) && e.target !== document.getElementById('pQueueBtn')) {
+        panel.classList.remove('open');
+        document.getElementById('pQueueBtn').classList.remove('on');
+      }
+    });
+
+    function startViz() {
+      const canvas = document.getElementById('vizcanvas');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      canvas.classList.add('active');
+      const ctx = canvas.getContext('2d');
+
+      const context = new AudioContext();
+      const src = context.createMediaElementSource(audioEl);
+      const analyser = context.createAnalyser();
+      src.connect(analyser);
+      analyser.connect(context.destination);
+      analyser.fftSize = 256;
+
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+
+      function render() {
+        requestAnimationFrame(render);
+        analyser.getByteFrequencyData(dataArray);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const barWidth = (canvas.width / bufferLength) * 1.5;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = dataArray[i] * 1.5;
+          const t = dataArray[i] / 255;
+          const r = Math.round(0 + t * 10);
+          const g = Math.round(60 + t * 180);
+          const b = Math.round(60 + t * 185);
+          ctx.fillStyle = `rgb(${r},${g},${b})`;
+          ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+          x += barWidth + 1;
         }
+      }
+      render();
+    }
+
+    const tooltip = document.getElementById('tooltip');
+    let tipX = 0, tipY = 0, curX = 0, curY = 0;
+
+    document.querySelectorAll('[data-tip]').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        tooltip.textContent = el.dataset.tip;
+        tooltip.classList.add('visible');
+      });
+      el.addEventListener('mouseleave', () => {
+        tooltip.classList.remove('visible');
+      });
     });
-});
-</script>
 
+    document.addEventListener('mousemove', e => {
+      curX = e.clientX;
+      curY = e.clientY;
+    });
 
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-
-    <script>
-        const userId = '485365560033411073';
-        let name = "qatual";
-
-
-        fetch(`https://api.lanyard.rest/v1/users/${userId}`)
-            .then(res => res.json())
-            .then(data => {
-                const user = data.data.discord_user;
-                console.warn(user
-                );
-                // Avatar
-                const avatarFormat = user.avatar.startsWith('a_') ? 'gif' : 'png';
-                const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${avatarFormat}`;
-                document.querySelector('.profile-picture').src = avatarUrl;
-
-                // Banner
-                fetch(`https://discordlookup.mesalytic.moe/v1/user/${userId}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        const bannerUrl = data.banner?.link;
-                        if (bannerUrl) {
-                            document.querySelector('.profile-header').style.backgroundImage = `url('${bannerUrl}')`;
-                        } else {
-                            document.querySelector('.profile-header').style.backgroundImage = `url('assets/def_banner.webp')`;
-                        }
-                    });
-
-                document.querySelector('#profile-name').textContent = user.username;
-            });
-
-
-    </script>
-    <script async src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const counter = new Counter({
-                workspace: 'counter',
-            });
-
-            const counterName = "cuner"; 
-            const cookieName = "lastVisitTime"; 
-
-            function setCookie(name, value, hours) {
-                const date = new Date();
-                date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
-                document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
-            }
-
-            function getCookie(name) {
-                const value = `; ${document.cookie}`;
-                const parts = value.split(`; ${name}=`);
-                if (parts.length === 2) return parts.pop().split(';').shift();
-            }
-
-            async function updateVisitorCount() {
-                const lastVisit = getCookie(cookieName);
-                const now = Date.now();
-
-                if (lastVisit && now - parseInt(lastVisit) < 12 * 60 * 60 * 1000) {
-                    try {
-                        const result = await counter.get(counterName);
-                        document.getElementById('visitor-count').textContent = result.data.value || result.data.up_count || "0";
-                        console.log("Sayaç arttırılmadı (zaten girilmiş).");
-                    } catch (error) {
-                        handleError(error);
-                    }
-                } else {
-                    try {
-                        const result = await counter.up(counterName);
-                        document.getElementById('visitor-count').textContent = result.data.up_count;
-                        setCookie(cookieName, now.toString(), 12); 
-                        console.log("Sayaç arttırıldı.");
-                    } catch (error) {
-                        handleError(error);
-                    }
-                }
-            }
-
-            function handleError(error) {
-                console.error('Sayaç hatası:', error);
-                const el = document.getElementById('visitor-count');
-                if (el) el.textContent = 'Sayaç yüklenemedi';
-            }
-
-            updateVisitorCount();
-        });
-    </script>
-    <script src="random-bg.js"></script>
-    <script src="script.js"></script>
+    (function animateTip() {
+      tipX += (curX - tipX) * 0.12;
+      tipY += (curY - tipY) * 0.12;
+      tooltip.style.left = tipX + 'px';
+      tooltip.style.top  = tipY + 'px';
+      requestAnimationFrame(animateTip);
+    })();
+  </script>
 </body>
-
 </html>
